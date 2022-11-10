@@ -1,0 +1,26 @@
+---
+- hosts: tomcat
+  become: yes
+  #user: jenkins
+  tasks:
+   - name: Remove old WAR file
+     file:
+       path: /opt/tomcat/webapps/web_app
+       state: absent
+       path: /opt/tomcat/webapps/web_app.war
+       state: absent
+   - name: Download a WAR File to the Tomcat webapps directory to be deployed
+     maven_artifact:
+       group_id: com.mycompany.app
+       artifact_id: web_app
+       extension: war
+       repository_url: 'http://10.0.4.241:8081/repository/maven-releases/'
+       username: jenkins-user
+       password: Vinay@1074
+       dest: /opt/tomcat/webapps
+   - name: +X to WAR file
+     shell: chmod -R 755 /opt/tomcat/webapps/web_app.war
+   - name: Restart Tomcat
+     service:
+       name: tomcat
+       state: restarted
