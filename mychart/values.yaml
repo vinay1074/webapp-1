@@ -3,6 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 3
+selectorLabels: "webapp"
+labels: "webapp"
 
 image:
   repository: vinay1074/web_app
